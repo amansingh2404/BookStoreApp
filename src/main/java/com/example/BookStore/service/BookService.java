@@ -1,9 +1,10 @@
 package com.example.BookStore.service;
 
-import com.example.BookStore.BookDto;
+import com.example.BookStore.model.Book;
 import org.springframework.http.ResponseEntity;
 
 public interface BookService {
 
-    ResponseEntity<?> uploadBook(BookDto bookDto);
+    Book uploadBook(Book bookDto);
+    Book getByName(String bookName);
 }

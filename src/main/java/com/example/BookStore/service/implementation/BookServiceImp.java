@@ -29,7 +29,7 @@ public class BookServiceImp implements BookService {
             Book book = bookRepository.findById( bookDto.getId()).orElse(null);
             assert book != null;
             book.setName(bookDto.getName());
-            book.getAuthor(bookDto.getAuthor());
+            book.setAuthor(bookDto.getAuthor());
             book.setPublisher(bookDto.getPublisher());
             return book;
 
@@ -45,20 +45,20 @@ public class BookServiceImp implements BookService {
 
 
     @Override
-    public ResponseEntity<?> uploadBook(BookDto bookDto) {
+    public Book uploadBook(Book book) {
 
         try{
-            Book book = getBookFormDto(bookDto, false);
-           Book savedBook =   bookRepository.save(book);
-            URI  location= ServletUriComponentsBuilder
-                    .fromCurrentRequest()
-                    .path("/{id}")
-                    .buildAndExpand(savedBook.getId())
-                    .toUri();
-            return ResponseEntity.created(location).body(savedBook);
+         //   Book book = getBookFormDto(bookDto, false);
+            return bookRepository.save(book);
+
         }catch (Exception e){
-          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error Creating book" + e.getMessage());
+          throw new RuntimeException("Unable to upload the book");
         }
 
     }
+    @Override
+    public Book getByName(String bookName){
+        return bookRepository.findByName(bookName);
+    }
+
 }
